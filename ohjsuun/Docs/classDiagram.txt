@@ -1,0 +1,136 @@
+@startuml
+skinparam linetype ortho
+top to bottom direction
+
+'Controllers
+'===========
+
+class StartController {
+    void choosePlayer(QString name)
+    void startGame()
+    void quit()
+}
+QObject <|-- StartController
+
+class GameController {
+    void moveTrains()
+    void spawnObstacles()
+    void quit()
+}
+QObject <|-- GameController
+
+class MapController {
+    void sendTrainTo(const ServiceTrain &train, const QGeoCoordinate &dest)
+    void toStore()
+    void pause()
+    void quit()
+}
+QObject <|-- MapController
+
+class StoreController {
+    void fixTrain(Train &train)
+    void buyTrain(QString type)
+    void toMap()
+    void pause()
+    void quit()
+}
+QObject <|-- StoreController
+
+class ResultsController {
+void toStart()
+    void quit()
+}
+QObject <|-- ResultsController
+
+'Models
+'======
+
+class GameState {
+    float customerOpinion
+    unsigned int coupons
+}
+QObject <|-- GameState
+
+class Station {
+    QString name
+    QGeoCoordinate location
+}
+QObject <|-- Station
+
+class StationsModel
+QAbstractListModel <|-- StationsModel
+'StationsModel o-- Station
+
+class Track {
+    Station *start
+    Station *end
+}
+QObject <|-- Track
+'Track o-- Station
+
+class TracksModel
+QAbstractListModel <|-- TracksModel
+'TracksModel -- Track
+
+class Obstacle {
+    QString type
+    unsigned int damage
+}
+QObject <|-- Obstacle
+
+class ObstaclesModel {
+    void spawn(unsigned int quantity)
+}
+QAbstractListModel <|-- ObstaclesModel
+'ObstaclesModel o-- Obstacle
+
+class Train {
+    int condition
+}
+QObject <|-- Train
+
+class PassengerTrain {
+    QString type
+    unsigned int number
+}
+Train <|-down- PassengerTrain
+'PassengerTrain o-- Station
+
+class PassengerTrainsModel {
+    void moveTrains()
+}
+QAbstractListModel <|-- PassengerTrainsModel
+'PassengerTrainsModel o-- PassengerTrain
+
+class ServiceTrain {
+    QString type
+    double speed
+    bool canJump
+}
+Train <|-down- ServiceTrain
+
+class ServiceTrainsModel {
+    void moveTrains()
+}
+QAbstractListModel <|-- ServiceTrainsModel
+'ServiceTrainsModel o-- ServiceTrain
+
+class Player {
+    QString name
+    QQmlListProperty medals()
+}
+QObject <|-- Player
+'Player o-- Medal
+
+class Medal {
+    QString name
+}
+QObject <|-- Medal
+
+class QAbstractListModel {
+    int rowCount(const QModelIndex &parent) const
+    QVariant data(const QModelIndex &index, int role) const
+    bool setData(const QModelIndex &index, const QVariant &value, int role)
+}
+
+@enduml

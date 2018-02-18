@@ -1,0 +1,259 @@
+#include "passengertrainsmodel.hh"
+#include "trackcoordinate.hh"
+
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
+using std::dynamic_pointer_cast;
+
+PassengerTrainsModel::PassengerTrainsModel(StationsModel* stations, TracksModel *tracks,
+                                           QObject *parent) :
+    QAbstractListModel(parent),
+    stations_ (stations),
+    tracks_ (tracks),
+    trainsWaiting_ (),
+    trainsRunning_ ()
+{
+    Q_ASSERT(stations != nullptr && tracks != nullptr);
+}
+
+void PassengerTrainsModel::readTrains(const QByteArray &file)
+{
+    if (file.isNull() || file.isEmpty())
+    {
+        throw std::runtime_error("Junadataa ei voitu ladata.");
+    }
+
+    QJsonDocument doc(QJsonDocument::fromJson(file));
+    QJsonArray trainArray = doc.array();
+    for (QJsonValue trainRef: trainArray)
+    {
+        if (trainRef.isObject())
+        {
+            QJsonObject trainObject = trainRef.toObject();
+            int number = trainObject.value("trainNumber").toInt();
+            QString type = trainObject.value("trainType").toString();
+            PassengerTrain* train = new PassengerTrain(number, type);
+            QJsonArray rowArray = trainObject.value("timeTableRows").toArray();
+            QString category = trainObject.value("trainCategory") .toString();
+            if (category == "Long-distance"){
+                for (QJsonValue rowRef : rowArray)
+                {
+                    if (rowRef.isObject())
+                    {
+                        QJsonObject row = rowRef.toObject();
+                        QString stationCode = row.value("stationShortCode").toString();
+                        QString rowType = row.value("type").toString();
+                        QDateTime actualTime = QDateTime::fromString(row.value("actualTime").toString(),
+                                                                     Qt::ISODate);
+                        if (actualTime.isValid())
+                        {
+                            Station* station = stations_->getStation(stationCode);
+                            if (station != nullptr)
+                            {
+                                train->addTimetableRow(actualTime, rowType, station);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw std::runtime_error("Virheellinen junadata.");
+                    }
+                }
+                train->validateTimetable();
+                if (train->hasTimeTable())
+                {
+                    train->setParent(this);
+                    trainsWaiting_.push_back(train);
+                }
+                else
+                {
+                    delete train;
+                }
+            }
+        }
+        else
+        {
+            throw std::runtime_error("Virheellinen junadata.");
+        }
+    }
+}
+
+void PassengerTrainsModel::moveTrains(QDateTime time)
+{
+    checkRunningTrains(time);
+    checkFinishedTrains(time);
+    calculateLocations(time);
+}
+
+void PassengerTrainsModel::causeDamage(PassengerTrain *train, int damage)
+{
+    int i = trainsRunning_.indexOf(train);
+    if (i != -1)
+    {
+        train->causeDagame(damage);
+        emit dataChanged(createIndex(i, 0), createIndex(i, 0));
+    }
+}
+
+QVector<PassengerTrain*>
+PassengerTrainsModel::trainsBetween(const RelativeCoordinate &one,
+                                    const RelativeCoordinate &two)
+{
+    QVector<PassengerTrain*> toReturn;
+    for (PassengerTrain *train : trainsRunning_)
+    {
+        auto location = dynamic_pointer_cast<TrackCoordinate>(train->location());
+        if (location != nullptr && one.routeToPasses(two, *location))
+        {
+            toReturn.push_back(train);
+        }
+    }
+    return toReturn;
+}
+
+
+int PassengerTrainsModel::rowCount(const QModelIndex &parent) const
+{
+    return parent.isValid() ? 0 : trainsRunning_.size();
+}
+
+QVariant PassengerTrainsModel::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid() || index.row() >= trainsRunning_.size())
+    {
+        return QVariant();
+    }
+    else
+    {
+        PassengerTrain *train = trainsRunning_.at(index.row());
+
+        switch (role)
+        {
+        case Qt::DisplayRole: return QVariant(train->number());
+        case LocationRole:
+        {
+            auto location = train->location();
+            return location != nullptr ? QVariant::fromValue(location->absolute()) : QVariant();
+        }
+        case HealthRole: return QVariant((float)train->health()/train->maxHealth());
+        default: return QVariant();
+        }
+    }
+}
+
+QHash<int, QByteArray> PassengerTrainsModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[LocationRole] = "location";
+    roles[HealthRole] = "health";
+    return roles;
+}
+
+
+
+void PassengerTrainsModel::checkRunningTrains(QDateTime time)
+{
+    QMutableVectorIterator<PassengerTrain*> waitingIter(trainsWaiting_);
+    QVector<PassengerTrain*> newTrains;
+    while (waitingIter.hasNext())
+    {
+        PassengerTrain *train = waitingIter.next();
+        if (train->startTime() <= time && train->endTime() >= time)
+        {
+            newTrains.push_back(waitingIter.value());
+            waitingIter.remove();
+        }
+    }
+    if (!newTrains.empty())
+    {
+        beginInsertRows(QModelIndex(), trainsRunning_.size(),
+                        trainsRunning_.size() + newTrains.size() -1);
+        for (PassengerTrain *train : newTrains)
+        {
+            train->setLocation(calculateLocation(train, time));
+            trainsRunning_.push_back(train);
+        }
+        endInsertRows();
+    }
+}
+
+void PassengerTrainsModel::checkFinishedTrains(QDateTime time)
+{
+    QMutableVectorIterator<PassengerTrain*> runningIter(trainsRunning_);
+    if (runningIter.hasNext())
+    {
+        while (runningIter.hasNext())
+        {
+            PassengerTrain *train = runningIter.next();
+            int i = trainsRunning_.indexOf(train);
+            if (i != -1 && train->endTime() <= time)
+            {
+                beginRemoveRows(QModelIndex(), i, i);
+                delete(train);
+                runningIter.remove();
+                endRemoveRows();
+                emit(passengerTrainFinished());
+            }
+            else if (i != -1 && train->isBroken())
+            {
+                beginRemoveRows(QModelIndex(), i, i);
+                delete(train);
+                runningIter.remove();
+                endRemoveRows();
+                emit(passengerTrainBroken());
+            }
+        }
+        if (trainsRunning_.empty() && trainsWaiting_.empty())
+        {
+            emit noMoreTrains();
+        }
+    }
+}
+
+void PassengerTrainsModel::calculateLocations(QDateTime time)
+{
+    for (int i = 0; i < trainsRunning_.size(); ++i)
+    {
+        PassengerTrain* train = trainsRunning_.at(i);
+        auto oldLocation = train->location();
+        auto newLocation = calculateLocation(train, time);
+        train->setLocation(newLocation);
+        emit dataChanged(createIndex(i, 0), createIndex(i, 0));
+        if (oldLocation != nullptr)
+        {
+            emit passengerTrainMoved(train, *oldLocation, *newLocation);
+        }
+    }
+}
+
+std::shared_ptr<RelativeCoordinate>
+PassengerTrainsModel::calculateLocation(PassengerTrain *train, QDateTime time)
+{
+    PassengerTrain::TimeTableRow latest = train->latestRow(time);
+    if (latest.type == PassengerTrain::TimeTableRow::arrival)
+    {
+        return stations_->location(latest.station);
+    }
+    else
+    {
+        PassengerTrain::TimeTableRow next = train->nextRow(time);
+        Track *track = tracks_->getTrack(latest.station, next.station);
+        if (track == nullptr)
+        {
+            // The track cannot be found (broken data), so stay on the last station...
+            return stations_->location(latest.station);
+        }
+        qint64 totalTime = latest.time.secsTo(next.time);
+        qint64 goneTime = latest.time.secsTo(time);
+        float ratio = ((float) goneTime) / totalTime;
+        if (track->start() == next.station)
+        {
+            // the track is the other way round
+            ratio = 1 - ratio;
+        }
+
+        return std::shared_ptr<TrackCoordinate>(new TrackCoordinate(track, ratio));
+    }
+}

@@ -1,0 +1,55 @@
+# Yksi komenttirivi tiedoston alussa
+T:MMM
+T:NN
+
+     # Komenntirivi, jonka alussa valilyonteja
+
+VVV:NN
+T:OOO
+T:RRRRRRRRRR
+NN:FF
+
+UU:OOO
+UU:PPPP
+    
+
+J:IIII
+SSSSSSSSSSSS:L
+E:A
+
+ 
+         
+FF:A
+GG:A
+VVV:SSSSSSSSSSSS
+# Useita
+     # kommentti-
+# riveja
+
+#perakkain.
+KK:L
+ HHH : B
+   IIII   :   B   
+    B    :    D    
+# Kommentti taas
+RRRRRRRRRR:KK
+J:C
+KK:C
+L:D
+ # KOMMENTTI
+MMM:E
+NN:E
+MMM:FF
+# Kommenttirivilla saa olla mita tahansa merkkeja !"#$%&/()=1234567890<>|:
+NN:GG
+ GG:PPPP
+OOO:HHH 
+B :A
+PPPP: HHH
+T:PPPP
+ PPPP : IIII 
+SSSSSSSSSSSS:KK
+PPPP:KK
+    QQ      :     J         
+T:SSSSSSSSSSSS
+                         # Laitetaan viela loppuunkin komentti varmuuden vuoksi

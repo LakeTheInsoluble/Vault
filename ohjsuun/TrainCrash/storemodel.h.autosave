@@ -1,0 +1,41 @@
+#ifndef STOREMODEL_H
+#define STOREMODEL_H
+
+#include "servicetrain.hh"
+
+#include <QAbstractListModel>
+#include <QVector>
+
+/// @brief Kaikki asemat
+class StoreModel : public QAbstractListModel
+{
+    Q_OBJECT
+
+public:
+
+    enum StoreRoles
+    {
+        ModelRole = Qt::UserRole + 1,
+        SpeedRole,
+        PriceRole,
+        MaxHealth,
+        Health,
+        
+    };
+
+    explicit StoreModel(QObject *parent = nullptr);
+
+    // QAbstractItemModel interface
+    int rowCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+
+public slots:
+
+
+private:
+    QVector<ServiceTrain*> trains_;
+};
+
+
+#endif // STOREMODEL_H

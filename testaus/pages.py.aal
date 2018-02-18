@@ -1,0 +1,204 @@
+language "python" {
+    # coding: utf-8
+
+    import os
+    from time import sleep
+    import fmbtx11
+
+    NAYTTO_ID = ":218681"
+    ODOTUSAIKA = 0.2
+}
+
+# preview-show-vars: page
+# preview-depth: 2
+# preview-hide-trans: i:refresh|i:forward|i:back
+
+variables { page, last, next }
+
+initial_state {
+    page = 1
+    last = []
+    next = []
+}
+
+adapter_init {
+    os.system("Xephyr -screen 640x480 " + NAYTTO_ID + " &")
+    sleep(5)
+    os.system("env DISPLAY=" + NAYTTO_ID + " firefox /home/tie21201/2017/pages/page1.html &")
+
+    #käynnistä selain ja ohjaa se aloitussivulle
+    sleep(5) # salli riittävästi aikaa selaimen käynnistymiseen
+
+    global s
+    s = fmbtx11.Screen(NAYTTO_ID)
+    s.setBitmapPath("kuvat")
+
+    s.setScreenshotArchiveMethod("remove")
+    s.setScreenshotLimit(1)
+
+    s.refreshScreenshot()
+}
+
+adapter_exit {
+    s.close()
+    os.system("killall Xephyr")
+}
+
+input "refresh" {
+    guard { return True }
+    adapter {
+        s.tapBitmap("refresh.png")
+        sleep(ODOTUSAIKA)
+        s.refreshScreenshot()
+    }
+}
+
+input "topage1" {
+    guard { return page != 1 }
+    adapter {
+        s.tapBitmap("page1.png")
+        sleep(ODOTUSAIKA)
+        s.refreshScreenshot()
+    }
+    body {
+        last.append(page)
+        next[:] = []
+        page = 1
+    }
+}
+
+input "topage2" {
+    guard { return page != 2 }
+    adapter {
+        s.tapBitmap("page2.png")
+        sleep(ODOTUSAIKA)
+        s.refreshScreenshot()
+    }
+    body {
+        last.append(page)
+        next[:] = []
+        page = 2
+    }
+}
+
+input "topage3" {
+    guard { return page != 3 }
+    adapter {
+        s.tapBitmap("page3.png")
+        sleep(ODOTUSAIKA)
+        s.refreshScreenshot()
+    }
+    body {
+        last.append(page)
+        next[:] = []
+        page = 3
+    }
+}
+
+input "topage4" {
+    guard { return page != 4 }
+    adapter {
+        s.tapBitmap("page4.png")
+        sleep(ODOTUSAIKA)
+        s.refreshScreenshot()
+    }
+    body {
+        last.append(page)
+        next[:] = []
+        page = 4
+    }
+}
+
+input "topage5" {
+    guard { return page != 5 }
+    adapter {
+        s.tapBitmap("page5.png")
+        sleep(ODOTUSAIKA)
+        s.refreshScreenshot()
+    }
+    body {
+        last.append(page)
+        next[:] = []
+        page = 5
+    }
+}
+
+input "topage6" {
+    guard { return page != 6 }
+    adapter {
+        s.tapBitmap("page6.png")
+        sleep(ODOTUSAIKA)
+        s.refreshScreenshot()
+    }
+    body {
+        last.append(page)
+        next[:] = []
+        page = 6
+    }
+}
+
+input "back" {
+    guard { return len(last) > 0 }
+    adapter { s.tapBitmap("back.png") }
+    body {
+        next.append(page)
+        page = last.pop()
+    }
+}
+
+input "forward" {
+    guard { return len(next) > 0 }
+    adapter { s.tapBitmap("forward.png") }
+    body {
+        last.append(page)
+        page = next.pop()
+    }
+}
+
+tag "page1" {
+    guard { return page == 1 }
+    adapter {
+        if not s.verifyBitmap("FIRST.png"):
+            raise AssertionError
+    }
+}
+
+tag "page2" {
+    guard { return page == 2 }
+    adapter {
+        if not s.verifyBitmap("SECOND.png"):
+            raise AssertionError
+    }
+}
+
+tag "page3" {
+    guard { return page == 3 }
+    adapter {
+        if not s.verifyBitmap("THIRD.png"):
+            raise AssertionError
+    }
+}
+
+tag "page4" {
+    guard { return page == 4 }
+    adapter {
+        if not s.verifyBitmap("FOURTH.png"):
+            raise AssertionError
+    }
+}
+
+tag "page5" {
+    guard { return page == 5 }
+    adapter {
+        if not s.verifyBitmap("FIFTH.png"):
+            raise AssertionError
+    }
+}
+
+tag "page6" {
+    guard { return page == 6 }
+    adapter {
+        if not s.verifyBitmap("SIXTH.png"):
+            raise AssertionError
+    }
+}

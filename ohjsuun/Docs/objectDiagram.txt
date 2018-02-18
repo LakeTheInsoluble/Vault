@@ -1,0 +1,69 @@
+@startUml
+
+object "mainWindow: ApplicationWindow" as mainWindow
+object aStartScreen << View >>
+object aMapScreen << View >>
+object aStoreScreen << View >>
+object anEndScreen << View >>
+
+object "frameTimer: QTimer" as frameTimer
+
+object "screenState: QStateMachine" as screenState << Controller >>
+object aGameController << Controller >>
+object aStartController << Controller >>
+object aMapController << Controller >>
+object aStoreController << Controller >>
+object aResultsController << Controller >>
+
+object aGameState << Model >>
+object "stations: StationsModel" as stations << Model >>
+object aStation << Model >>
+object "tracks: TracksModel" as tracks << Model >>
+object aTrack << Model >>
+object "obstacles: ObstaclesModel" as obstacles << Model >>
+object anObstacle << Model >>
+object "passengerTrains: PassengerTrainsModel" as passengerTrains << Model >>
+object aPassengerTrain << Model >>
+object "serviceTrains: ServiceTrainsModel" as serviceTrains << Model >>
+object aServiceTrain << Model >>
+
+mainWindow *-- "1" aStartScreen
+mainWindow *-- "1" aMapScreen
+mainWindow *-- "1" aStoreScreen
+mainWindow *-- "1" anEndScreen
+
+aMapScreen <..> aGameState
+aStoreScreen <..> aGameState
+aMapController ..> aGameState
+aStoreController ..> aGameState
+
+aStartScreen ..> aStartController
+aMapScreen ..> aMapController
+aStoreScreen ..> aStoreController
+anEndScreen ..> aResultsController
+
+frameTimer ..> aGameController
+
+aMapController ..> aGameController
+aStoreController ..> aGameController
+aStartController ..> screenState
+aMapController ..> screenState
+aStoreController ..> screenState
+aResultsController ..> screenState
+
+aGameController ..> aGameState
+
+aGameState *-- "1" stations
+aGameState *-- "1" tracks
+aGameState *-- "1" obstacles
+aGameState *-- "1" passengerTrains
+aGameState *-- "1" serviceTrains
+
+stations *-- "0.." aStation
+tracks *-- "0.." aTrack
+obstacles *-- "0.." anObstacle
+passengerTrains *-- "0.." aPassengerTrain
+serviceTrains *-- "1.." aServiceTrain
+
+@endUml
+

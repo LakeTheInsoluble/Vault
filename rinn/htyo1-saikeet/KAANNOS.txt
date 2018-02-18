@@ -1,0 +1,3 @@
+Palautus sis‰lt‰‰ QTCreator-projektitiedoston rinn2017-projekti.pro, jonka saa k‰‰nnetty‰ seuraavasti:
+qmake-qt5 rinn2017-projekti.pro
+make

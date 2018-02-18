@@ -1,0 +1,3 @@
+Kirjoitin alkuperäisen toimivan version.
+Muutin laskurit-tietorakenteen muuttujat atomisiksi, kirjoitin lukoilla 
+suojatun näytteenkeruufunktion ja lisäsin säikeet mainiin.

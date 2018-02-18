@@ -1,0 +1,42 @@
+# GitLab CI-konfiguraatiorunko kursiille Ohjelmoinnin tekniikat 2017-2018
+# Uudelleennimä tämä tiedosto gitlab-ci
+
+# Imagena on käytössä Alpine Linux, 
+# johon asennettu Qt 5.9.1 ja tarvittavat käännöstyökalut
+
+# Jos käytät harjoitustyön toteuttamiseen muuta tekniikka kuin Qt ja C++,
+# ota yhteyttä kurssihenkilökuntaan saadaksesi käyttöösi sopivan imagen.
+
+image: alpine-qt:latest
+# cachetetaan build-vaiheessa luodut (testi)binäärit, jotta ne siirtyvät eri vaiheiden välillä.
+cache:
+    paths:
+      - /pathToBinaries
+stages: 
+  - build
+  - test
+
+# Mallin vuoksi muutama jobi eri vaiheisiin. Lisätty määre only: - none  (regexp) estämään CI-putken ajaminen
+# ennen kuin konfiguraatio on kunnossa. 
+buildJob1:
+  only: 
+    - none
+  stage: build
+  script: ./build
+  
+
+unitTest1:
+  only: 
+    - none
+  stage: test
+  script: ./unitTest1
+
+
+unitTest2:
+  only: 
+    - none
+  stage: test
+  script: ./unitTest2
+
+
+# Tarkempi kuvaus GitLab CI:n konfigurointiin https://docs.gitlab.com/ce/ci/yaml/

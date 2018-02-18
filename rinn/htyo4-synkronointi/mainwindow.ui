@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>750</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>BarrierSync</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="buttonValitse">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>10</y>
+      <width>100</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Valitse kuva</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelKuva">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>50</y>
+      <width>600</width>
+      <height>600</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonAloita">
+    <property name="geometry">
+     <rect>
+      <x>455</x>
+      <y>670</y>
+      <width>125</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Seuraava kaistale</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonLopeta">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>670</y>
+      <width>125</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Lopeta</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

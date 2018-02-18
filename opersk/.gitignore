@@ -1,0 +1,63 @@
+*.a
+*.aux
+*.BAK
+*.bak
+*.depend*
+*.dll
+*.dvi
+*.eps
+*.fmt
+*.gch
+*.GIF
+*.gif
+*.GZ
+*.gz
+*.JPEG
+*.jpeg
+*.JPG
+*.jpg
+*.ld
+*.log
+*.o
+*.obsolete
+*.PDF
+*.pdf
+*.PNG
+*.png
+*.pro.user
+*.ps
+*.pyc
+*.so
+*.tgz
+*.taz
+*.toc
+*.ZIP
+*.zip
+*autosave*
+*~
+.*history*
+.bzr*
+.nfs*
+.\#*
+\#*\#
+__pycache__/
+a.exe
+a.out
+build-*/
+core*
+RCS
+SCCS
+
+
+############################################################################
+# Nämä asetukset liittyvät Ohjelmoinnin peruskurssilla siihen, että
+# opiskelijat laittavat Gittiin binäärejä.  Eihän tämä kattava
+# ratkaisu ole, mutta ainakaan harjoitustöiden ja ennakkotehtävien
+# binäärit eivät tule mukaan.  Viikkoharjoitusten ja omien ohjelmien
+# projektit opiskelijat saavat nimetä haluamallaan tavalla: jos mokaa
+# git add:in kanssa, binäärit päätyvät tietovarastoon.
+
+/harjoitustyo-0?/harjoitustyo-0?
+/ennakkotehtava-[01]?/ennakkotehtava-[01]?
+/harjoitustyo-0?/Makefile
+/ennakkotehtava-[01]?/Makefile

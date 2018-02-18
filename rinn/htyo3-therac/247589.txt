@@ -1,0 +1,1 @@
+Teimme harjoitustyön lukemalla kukin artikkelin itseksemme ja sen jälkeen kirjoitimme yhdessä keskustellen lopullisen harjoitustyötekstin. Kirjoitin muun muassa osia Therac-järjestelmän kuvauksesta ja ehdoitetuista ratkaisuista Therac-25:n ongelmiin.

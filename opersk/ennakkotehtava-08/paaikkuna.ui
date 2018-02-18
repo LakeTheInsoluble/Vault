@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Paaikkuna</class>
+ <widget class="QWidget" name="Paaikkuna">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>616</width>
+    <height>426</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Paaikkuna</string>
+  </property>
+  <widget class="QPushButton" name="nollaa_button">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>120</y>
+     <width>95</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Nollaa</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="lopeta_button">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>120</y>
+     <width>95</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Lopeta</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="kmh_spinbox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+   <property name="suffix">
+    <string> km/h</string>
+   </property>
+   <property name="maximum">
+    <number>99</number>
+   </property>
+  </widget>
+  <widget class="QScrollBar" name="kmh_slider">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>30</y>
+     <width>261</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="maximum">
+    <number>99</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLCDNumber" name="miles_lcd">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>80</y>
+     <width>64</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>lopeta_button</sender>
+   <signal>clicked()</signal>
+   <receiver>Paaikkuna</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>456</x>
+     <y>270</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>433</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kmh_spinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>kmh_slider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>81</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>214</x>
+     <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kmh_slider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>kmh_spinbox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>323</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>32</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

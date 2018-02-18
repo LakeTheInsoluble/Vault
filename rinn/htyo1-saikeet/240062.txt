@@ -1,0 +1,2 @@
+Kävin läpi koodin ja totesin kaiken toimivan niinkuin piti, enkä löytänyt mitään parannettavaa edes ohjelmointityylistä.
+Palautin työn ja lisäsin tarvittavat yleistiedot mainin alkuun.

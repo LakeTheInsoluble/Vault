@@ -1,0 +1,2 @@
+read 'example-data.txt'
+cheapest_friendpath kk1 kk2

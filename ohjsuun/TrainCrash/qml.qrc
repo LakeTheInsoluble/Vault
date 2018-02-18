@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>ScreenState.qml</file>
+        <file>StartScreen.qml</file>
+        <file>MapScreen.qml</file>
+        <file>MapScreenHeader.qml</file>
+        <file>StoreScreen.qml</file>
+        <file>StoreScreenHeader.qml</file>
+        <file>ResultsScreen.qml</file>
+        <file>ratadata.json</file>
+        <file>asemadata.json</file>
+        <file>PauseDialog.qml</file>
+    </qresource>
+</RCC>

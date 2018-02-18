@@ -1,0 +1,14 @@
+*.[oa]
+*Makefile
+*galaxytest
+*statisticstest
+*.pro.user
+*debug*
+*.qmake.stash
+*moc_predefs.h
+*.moc
+build-GalaxyGame-Desktop-Debug*
+*ui_*
+*moc_*
+*.autosave
+*.Release

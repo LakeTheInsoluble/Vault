@@ -1,0 +1,28 @@
+@startuml
+left to right direction
+
+[*] --> Start
+
+Start --> Game
+Start --> [*]
+
+state Game {
+  state Active {
+    state Map
+    state Store
+    Map --> Store
+    Store --> Map
+  }
+  state Paused
+  Paused -left-> Active
+  Active --> Paused
+}
+
+Game --> Results
+Game --> [*]
+
+Results --> Start
+
+Results --> [*]
+
+@enduml
