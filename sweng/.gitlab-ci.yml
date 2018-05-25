@@ -1,0 +1,28 @@
+stages:
+  - build
+  - test
+  - deploy
+
+job 1:
+  stage: build
+  # Dependencies
+  script: testscript
+  allow_failure: true
+
+job 2:
+  stage: build
+  # Artifacts
+  script: testscript
+  allow_failure: true
+
+job 3:
+  stage: test
+  # Testing
+  script: testscript
+  allow_failure: true
+  
+job 4:
+  stage: deploy
+  # Deploy
+  script: testscript
+  allow_failure: true

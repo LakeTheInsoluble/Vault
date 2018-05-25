@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/EndScreen.unity
+    guid: 500a1c42c28f2724988e2500178fc0e6
+  - enabled: 1
+    path: Assets/JangliStory.unity
+    guid: f8aa2b5fac00d5a4f8a7ff92fa85ee3a
+  - enabled: 1
+    path: Assets/Menu.unity
+    guid: 4412ae24671bd6147a8467be1bf3578a
+  - enabled: 1
+    path: Assets/Level1/JangliGame.unity
+    guid: 0cc6f00cff97dd94b877bf2592b7cc3a
+  - enabled: 1
+    path: Assets/Level2/WaterLevel.unity
+    guid: 77f25891a268ae04599bdea6a61252b7
+  - enabled: 1
+    path: Assets/Level3/JangliGameL3.unity
+    guid: 83ad83feaa2e2284d9fe787823091c7b
+  - enabled: 1
+    path: Assets/Level4/CannibalLevel.unity
+    guid: 79633d7878ea5e44bb41ba4499b53791
+  - enabled: 1
+    path: Assets/GameOver.unity
+    guid: 269c5bac95e4b5f4ba20e5e91fa9cf28

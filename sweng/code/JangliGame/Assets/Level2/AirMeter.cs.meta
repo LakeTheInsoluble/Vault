@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 231860d80c82cde48b14f3b73f3079ed
+timeCreated: 1524846711
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - oxygenSlider: {fileID: 114903515518848020, guid: 5913d4e435f16674db7240bf69cc1736,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
